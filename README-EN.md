@@ -1,4 +1,4 @@
-# 📚 BooksChina Book Data Crawler
+# 📚 BooksChina Book Data Crawler Based on the Scrapy Framework
 
 ![Project Status](https://img.shields.io/badge/status-active-brightgreen) ![Python](https://img.shields.io/badge/python-3.8%2B-blue) ![Scrapy](https://img.shields.io/badge/scrapy-2.11%2B-green) ![MySQL](https://img.shields.io/badge/mysql-8.0%2B-blue) ![Fake_UserAgent](https://img.shields.io/badge/fake--useragent-1.5%2B-orange)
 
