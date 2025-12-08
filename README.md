@@ -1,4 +1,4 @@
-# 📚 BooksChina 图书数据爬虫
+# 📚 基于Scrapy框架的中图网图书数据爬虫
 
 ![项目状态](https://img.shields.io/badge/status-active-brightgreen) ![Python](https://img.shields.io/badge/python-3.8%2B-blue) ![Scrapy](https://img.shields.io/badge/scrapy-2.11%2B-green) ![MySQL](https://img.shields.io/badge/mysql-8.0%2B-blue) ![Fake_UserAgent](https://img.shields.io/badge/fake--useragent-1.5%2B-orange)
 
