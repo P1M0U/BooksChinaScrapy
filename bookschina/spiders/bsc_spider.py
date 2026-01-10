@@ -14,7 +14,7 @@ class BscSpiderSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.cookie = self.load_cookies()
-        self.logger.info(f"初始化完成，已加载 {len(self.cookie)} 个cookie")
+        self.logger.debug(f"初始化完成，已加载 {len(self.cookie)} 个cookie")
         self.ua = fake_useragent.UserAgent()
         self.success_count = 0
     def load_cookies(self):
@@ -22,7 +22,7 @@ class BscSpiderSpider(scrapy.Spider):
             with open('D:\\ztw_cookies.json', 'r', encoding='utf-8') as f:
                 cookies_list = json.load(f)
                 cookies_dict = {cookie['name']: cookie['value'] for cookie in cookies_list}
-                self.logger.info(f"成功加载{len(cookies_dict)}个Cookie")
+                self.logger.debug(f"成功加载{len(cookies_dict)}个Cookie")
                 return cookies_dict
         except Exception as e:
             self.logger.error(f"加载Cookie失败: {e}")
@@ -38,17 +38,16 @@ class BscSpiderSpider(scrapy.Spider):
                 dont_filter=True
             )
     def closed(self, reason):
-        
-        self.logger.info(f"爬虫关闭原因: {reason}")
+        self.logger.warning(f"爬虫关闭原因: {reason}")
         self.logger.info(f"共成功获取{self.success_count}条数据")
     def parse_ranking(self, response):
-        self.logger.info(f"开始解析榜单页面: {response.url}")
+        self.logger.debug(f"开始解析榜单页面: {response.url}")
         ranking_list = []
         for row in response.xpath('//div[@class="bookListInner"]/ul[@class="booktop"]/li'):
             ranking_url = row.xpath('./dl/dt/a/@href').get()
             ranking_name = row.xpath('./dl/dt/a/text()').get()
             ranking_url = response.urljoin(ranking_url)
-            self.logger.info(f"正在获取一级分类榜单{ranking_name},URL: {ranking_url}")
+            self.logger.debug(f"正在获取一级分类榜单{ranking_name},URL: {ranking_url}")
             ranking_list.append({
                 'name': ranking_name,
                 'url': ranking_url
@@ -57,7 +56,7 @@ class BscSpiderSpider(scrapy.Spider):
                 ranking_url = link.xpath('./@href').get()
                 ranking_name = link.xpath('./text()').get()
                 ranking_url = response.urljoin(ranking_url)
-                self.logger.info(f"正在获取二级分类榜单{ranking_name},URL: {ranking_url}")
+                self.logger.debug(f"正在获取二级分类榜单{ranking_name},URL: {ranking_url}")
                 ranking_list.append({
                     'name': ranking_name,
                     'url': ranking_url
@@ -73,14 +72,14 @@ class BscSpiderSpider(scrapy.Spider):
             )
 
     def parse_page(self,response):
-        self.logger.info(f"开始解析榜单翻页: {response.meta.get('ranking_name')}")
+        self.logger.debug(f"开始解析榜单翻页: {response.meta.get('ranking_name')}")
         page_num = response.xpath('//div[@class="pagination"]/div[@class="paging"]/div[@class="p-skip"]/em/b/text()').get()
         if page_num is None:
             self.logger.warning(f"榜单{response.meta.get('ranking_name')}没有分页信息,可能只有一页")
             page_num = 1
         else:
             page_num = int(page_num.strip())
-        self.logger.info(f"{response.meta.get('ranking_name')}榜单总共有{page_num}页")
+        self.logger.debug(f"{response.meta.get('ranking_name')}榜单总共有{page_num}页")
         parsed_url = urlparse(response.url)
         current_path = parsed_url.path
         for page in range(1,page_num+1):
@@ -91,7 +90,7 @@ class BscSpiderSpider(scrapy.Spider):
             else:
                 base_path = current_path
             page_url = response.urljoin(f"{base_path}1_0_{page}/")
-            self.logger.info(f"正在获取榜单{response.meta.get('ranking_name')},第{page}页,URL: {page_url}")
+            self.logger.debug(f"正在获取榜单{response.meta.get('ranking_name')},第{page}页,URL: {page_url}")
             yield scrapy.Request(
                 page_url,
                 callback=self.parse_list,
@@ -103,7 +102,7 @@ class BscSpiderSpider(scrapy.Spider):
             )
         
     def parse_list(self,response):
-        self.logger.info(f" 当前是{response.meta.get('ranking_name')}榜单的第{response.meta.get('page')}页,响应码{response.status}")
+        self.logger.debug(f" 当前是{response.meta.get('ranking_name')}榜单的第{response.meta.get('page')}页,响应码{response.status}")
         # book_list = []
         for row in response.xpath('//div[@id="container"]/div[@class="listMain clearfix"]/div[@class="listLeft"]/div[@class="bookList"]/ul/li'):
             info_url = row.xpath('./div[@class="infor"]/h2/a/@href').get()
@@ -129,7 +128,7 @@ class BscSpiderSpider(scrapy.Spider):
                 rating_num = "0条评论"
             else:
                 rating_num = rating_num.strip()
-            self.logger.info(f"列表页中获取到书籍ID: {book_id},书名: {title},作者: {author},评论数: {rating_num}")
+            self.logger.debug(f"列表页中获取到书籍ID: {book_id},书名: {title},作者: {author},评论数: {rating_num}")
             yield scrapy.Request(
                 info_url,
                 callback=self.parse_info,
@@ -144,7 +143,7 @@ class BscSpiderSpider(scrapy.Spider):
             )
 
     def parse_info(self,response):
-        self.logger.info(f"开始解析书籍信息:ID {response.meta.get('book_id')},书名：{response.meta.get('title')},响应码{response.status}")
+        self.logger.debug(f"开始解析书籍信息:ID {response.meta.get('book_id')},书名：{response.meta.get('title')},响应码{response.status}")
         title = response.meta.get('title')
         author = response.meta.get('author')
         rating_num = response.meta.get('rating_num')

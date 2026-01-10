@@ -10,3 +10,4 @@ os.chdir(base_dir)
 sys.path.append(base_dir)
 
 execute(["scrapy","crawl","bsc_spider"])
+
