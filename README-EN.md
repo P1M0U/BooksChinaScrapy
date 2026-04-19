@@ -204,7 +204,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 📧 Contact Information
 
 - Project Address: [Github](https://github.com/P1M0U/BooksChinaScrapy/)
-- If you find this project useful, please give me a star ⭐
+- Personal Email: [P1M0U](mailto:p1m0u@foxmail.com)
+- Please give me a star if you find this project helpful ⭐
 
 ---
 
