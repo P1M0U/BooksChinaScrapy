@@ -204,7 +204,7 @@ CREATE TABLE books_tb (
 ## 📧 联系方式
 
 - 项目地址：[Github](https://github.com/P1M0U/BooksChinaScrapy/)
-- 个人邮箱：[P1M0U](mailto:p1m0u@foxmail.com)
+- 个人邮箱：`p1m0u@foxmail.com`
 - 如果觉得对你有用，麻烦请您帮我点一下star ⭐
 
 ---
