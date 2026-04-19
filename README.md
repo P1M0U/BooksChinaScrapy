@@ -203,7 +203,7 @@ CREATE TABLE books_tb (
 
 ## 📧 联系方式
 
-- 项目地址：[Github](https://github.com/JoeBiden-Engineer/BooksChinaScrapy/)
+- 项目地址：[Github](https://github.com/P1M0U/BooksChinaScrapy/)
 
 ---
 
